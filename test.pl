@@ -49,7 +49,7 @@ foreach my $setting (keys %settings)
     {
 	foreach my $compression (@compression_levels)
 	{
-	    my $outfile = join("-", ("bonnie", $setting, $recordsize, $compression, "empty")).".csv";
+	    my $outfile = join("-", ("bonnie", $setting, $recordsize, $compression, "empty"));
 
 	    do_zfs_benchmark($outfile, $recordsize, $settings{$setting}, $compression);
 	}
@@ -104,7 +104,3 @@ sub do_zfs_benchmark
     system($cmd, @args) == 0 or die "Error on destroy of the pool: $?";
     $logger->info("Finished destruction of tank...");
 }
-
-
-
-
