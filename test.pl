@@ -44,6 +44,8 @@ if (-e $temp_file)
 my $temp_file_size = -s $temp_file;
 $logger->info(sprintf("Finished to creation of the random file '%s' with size %d Bytes", $temp_file, $temp_file_size));
 
+my $test_folder = "/tank/test/";
+
 my @compression_levels=qw(lz4 off);
 my @recordsizes=qw(128k 1M);
 
@@ -118,8 +120,8 @@ sub do_zfs_benchmark
     $logger->info("Finished recordsize setting");
 
     $logger->info("Creating temporary folder...");
-    mkdir("/tank/test") || die "Error on creating the folder: $?";
-    chmod 0777, "/tank/test" || die "Error on changing folder permission: $?";
+    mkdir($test_folder) || die "Error on creating the folder '$test_folder': $?";
+    chmod 0777, $test_folder || die "Error on changing folder permission: $?";
     $logger->info("Finished creation of temporary folder");
 
     foreach my $fillstatus (@min_filled)
@@ -131,7 +133,7 @@ sub do_zfs_benchmark
 	$logger->info("Running bonnie++ benchmark...");
 	$cmd = "bonnie++";
 	my $testname = sprintf("%s-%07.3f_percent_filled", $testbasename, $filllevel);
-	@args = ("-m", $testname, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q");
+	@args = ("-m", $testname, "-d", $test_folder, "-u", "genomics", "-n", "192", "-q");
 	my $output = capturex($cmd, @args);
 
 	print OUTPUT $output;
@@ -163,10 +165,22 @@ sub fill_tank_to_at_least
 
 	$logger->info(sprintf("Need to create about %d files to fill tank...", $files2create));
 
+	my $subfolder = $test_folder;
+
 	for(my $i=1; $i<=$files2create; $i++)
 	{
+	    # generate a new directory every 1000 attempts
+	    my $value = rand();
+
+	    if ($value < 0.001)
+	    {
+		my $new_dirname = File::Temp::tempnam( $test_folder, "temp".("X"x20) );
+		mkdir($new_dirname) || die "Unable to create folder '$new_dirname': $!";
+		$subfolder = $new_dirname;
+	    }
+
 	    # create a new filename
-	    my $unopened_file = File::Temp::tempnam( "/tank/temp/", "temp".("X"x20) );
+	    my $unopened_file = File::Temp::tempnam( $subfolder, "temp".("X"x20) );
 	    # and copy the content of the temp file to it
 	    copy($temp_file, $unopened_file) || die "Copy failed: $!";
 
