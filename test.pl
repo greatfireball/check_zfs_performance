@@ -159,12 +159,19 @@ sub fill_tank_to_at_least
 
 	my $files2create = int($space_to_fill/$temp_file_size)+1;
 
-	for(my $i=0; $i<$files2create; $i++)
+	$logger->info(sprintf("Need to create about %d files to fill tank...", $files2create));
+
+	for(my $i=1; $i<=$files2create; $i++)
 	{
 	    # create a new filename
 	    my $unopened_file = File::Temp::tempnam( "/tank/temp/", "temp".("X"x20) );
 	    # and copy the content of the temp file to it
 	    copy($temp_file, $unopened_file) || die "Copy failed: $!";
+
+	    if ($i%250==0)
+	    {
+		$logger->info(sprintf("Created %d out of %d files... %d files to go...", $i, $files2create, ($files2create-$i)));
+	    }
 	}
 
 	$curr_fill = get_fill_level();
