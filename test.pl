@@ -72,7 +72,7 @@ foreach my $compression (@compression_levels)
 {
     foreach my $recordsize (@recordsizes)
     {
-	foreach my $setting (keys %settings)
+	foreach my $setting (sort keys %settings)
 	{
 	    my $outfile = join("-", ("bonnie", $setting, $recordsize, $compression));
 
