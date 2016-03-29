@@ -96,7 +96,7 @@ sub do_zfs_benchmark
     $logger->info("Finished recordsize setting");
 
     $logger->info("Creating temporary folder...");
-    mkdir("/tank/test", 0777) || die "Error on creating the folder: $!";
+    mkdir("/tank/test") || die "Error on creating the folder: $!";
     $logger->info("Finished creation of temporary folder");
 
     $logger->info("Running bonnie++ benchmark...");
