@@ -8,7 +8,7 @@ my $logconf = "
 # A simple root logger with a Log::Log4perl::Appender::File
 # file appender in Perl.
 ############################################################
-log4perl.rootLogger=ERROR, LOGFILE
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
 
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=/var/log/myerrs.log
@@ -16,6 +16,10 @@ log4perl.appender.LOGFILE.mode=append
 
 log4perl.appender.LOGFILE.layout=PatternLayout
 log4perl.appender.LOGFILE.layout.ConversionPattern=[%r] %F %L %c - %m%n
+
+log4perl.appender.Screen         = Log::Log4perl::Appender::Screen
+log4perl.appender.Screen.stderr  = 0
+log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
 ";
 
 use Log::Log4perl;
