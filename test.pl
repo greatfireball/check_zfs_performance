@@ -47,7 +47,7 @@ $logger->info(sprintf("Finished to creation of the random file '%s' with size %d
 my @compression_levels=qw(lz4 off);
 my @recordsizes=qw(128k 1M);
 
-my @min_filled = (0, 0.25, 0.5, 0.75, 0.9);
+my @min_filled = (0, 0.5, 0.75);
 
 my %settings=(
     single_drive => "sda",
