@@ -51,14 +51,16 @@ my @min_filled = (0, 0.5, 0.75);
 
 my %settings=(
     single_drive => "sda",
-    mirror_same_shelf => "mirror sda sdb",
-    mirror_different_shelfs => "mirror sda sdg",
-    raidz_same_shelf => "raidz sda sdb sdc sdd sde sdf",
-    raidz_different_shelfs => "raidz sda sdb sdc sdg sdh sdi",
-    two_raidz_different_shelfs => "raidz sda sdb sdc sdd sde sdf raidz sdg sdh sdi sdj sdk sdl",
-    raidz2_same_shelf => "raidz2 sda sdb sdc sdd sde sdf",
-    raidz2_different_shelfs => "raidz2 sda sdb sdc sdg sdh sdi",
-    two_raidz2_different_shelfs => "raidz2 sda sdb sdc sdd sde sdf raidz2 sdg sdh sdi sdj sdk sdl"
+
+    mirror_same_shelf => "mirror sda sdb mirror sdc sdd mirror sde sdf",
+    mirror_different_shelfs => "mirror sda sdg mirror sdb sdh mirror sdc sdi mirror sdd sdj mirror sde sdk mirror sdf sdl",
+
+    threeway_mirror_two_shelfs => "mirror sda sdb sdg mirror sdc sdh sdi mirror sdd sde sdj mirror sdf sdk sdl",
+    threeway_mirror_same_shelf => "mirror sda sdb sdc mirror sdg sdh sdi mirror sdd sde sdf mirror sdj sdk sdl",
+
+    raidz2_one_vdev_same_shelf => "raidz2 sda sdb sdc sdd sde sdf",
+    raidz2_one_vdev_different_shelfs => "raidz2 sda sdb sdc sdg sdh sdi",
+    raidz2_two_vdevs_different_shelfs => "raidz2 sda sdb sdc sdd sde sdf raidz2 sdg sdh sdi sdj sdk sdl"
 );
 
 my $outfile = "run.out";
