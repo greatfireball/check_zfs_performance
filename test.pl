@@ -62,7 +62,7 @@ sub do_zfs_benchmark
 
     $logger->info("Creating a new zpool...");
     my $cmd = "zpool";
-    my @args = ("create", "-o ashift=12", "-o autoexpand=on", "tank", $diskconfig);
+    my @args = ("create", "-o", "ashift=12", "-o", "autoexpand=on", "tank", $diskconfig);
     system($cmd, @args) == 0 or die "Error creating the pool: $?";
     $logger->info("Finished creation of a new zpool");
 
@@ -74,7 +74,7 @@ sub do_zfs_benchmark
 
     $logger->info("Re-importing tank...");
     $cmd = "zpool";
-    @args = ("import", "-d /dev/disk/by-path/", "tank");
+    @args = ("import", "-d", "/dev/disk/by-path/", "tank");
     system($cmd, @args) == 0 or die "Error on reimport of the pool: $?";
     $logger->info("Finished re-import of tank");
 
@@ -94,8 +94,9 @@ sub do_zfs_benchmark
     mkdir("/tank/test", 0777) || die "Error on creating the folder: $!";
     $logger->info("Finished creation of temporary folder");
 
-    $cmd = "bonie++";
-    @args = ("-m $outputfile", "-d /tank/test", "-u genomics", "-n 192", "-q", ">> output.csv");
+    $cmd = "bonnie++";
+    @args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", $outputfile.".csv");
+    system($cmd, @args) == 0 or die "Error on running bonnie++: $?";
 
     $logger->info("Destroying tank...");
     $cmd = "zpool";
