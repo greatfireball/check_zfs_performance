@@ -67,7 +67,7 @@ sub do_zfs_benchmark
 
     $logger->info("Creating a new zpool...");
     my $cmd = "zpool";
-    my @args = ("create", "-o", "ashift=12", "-o", "autoexpand=on", "tank", $diskconfig);
+    my @args = ("create", "-o", "ashift=12", "-o", "autoexpand=on", "tank", split(/\s+/, $diskconfig));
     system($cmd, @args) == 0 or die "Error creating the pool: $?";
     $logger->info("Finished creation of a new zpool");
 
