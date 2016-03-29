@@ -102,7 +102,8 @@ sub do_zfs_benchmark
     $logger->info("Running bonnie++ benchmark...");
     $cmd = "bonnie++";
     @args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", $outputfile.".csv");
-    system($cmd, @args) == 0 or die "Error on running bonnie++: $?";
+    $cmd = join(" ", ($cmd, @args));
+    system($cmd) == 0 or die "Error on running bonnie++ using the command '$cmd': $?";
     $logger->info("Finished bonnie++ benchmark run");
 
     $logger->info("Destroying tank...");
