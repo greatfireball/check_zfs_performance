@@ -25,6 +25,7 @@ log4perl.appender.Screen.layout.ConversionPattern=[%d] %c - %m%n
 
 use File::Temp;
 use File::Copy;
+use IPC::System::Simple;
 
 use Log::Log4perl;
 Log::Log4perl->init(\$logconf);
