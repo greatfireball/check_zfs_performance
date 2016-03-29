@@ -3,6 +3,26 @@
 use strict;
 use warnings;
 
+my $logconf = "
+############################################################
+# A simple root logger with a Log::Log4perl::Appender::File
+# file appender in Perl.
+############################################################
+log4perl.rootLogger=ERROR, LOGFILE
+
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=/var/log/myerrs.log
+log4perl.appender.LOGFILE.mode=append
+
+log4perl.appender.LOGFILE.layout=PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=[%r] %F %L %c - %m%n
+";
+
+use Log::Log4perl;
+Log::Log4perl->init(\$logconf);
+
+my $logger = Log::Log4perl->get_logger();
+
 # create a 1 GB random drive as seed
 system("dd if=/dev/urandom of=/tmp/random_1Gb.bin bs=1M count=1024");
 
