@@ -56,7 +56,9 @@ foreach my $setting (keys %settings)
 	{
 	    my $outfile = join("-", ("bonnie", $setting, $recordsize, $compression, "empty"));
 
+	    $logger->info(sprintf("Starting a test with vdev settings '%s', recordsize: %s and compression %s...", $setting, $recordsize, $compression));
 	    do_zfs_benchmark($outfile, $recordsize, $settings{$setting}, $compression);
+	    $logger->info("Finished test");
 	}
     }
 }
