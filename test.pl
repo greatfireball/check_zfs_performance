@@ -123,7 +123,7 @@ sub do_zfs_benchmark
 
 	$logger->info("Running bonnie++ benchmark...");
 	$cmd = "bonnie++";
-	@args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", join("", ($outputfile, "_", $filllevel, "_filled", ".csv")));
+	@args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", sprintf("%s-%.3f_percent_filled.csv", $outputfile, $filllevel));
 	$cmd = join(" ", ($cmd, @args));
 	system($cmd) == 0 or die "Error on running bonnie++ using the command '$cmd': $?";
 	$logger->info("Finished bonnie++ benchmark run");
