@@ -61,6 +61,9 @@ my %settings=(
     two_raidz2_different_shelfs => "raidz2 sda sdb sdc sdd sde sdf raidz2 sdg sdh sdi sdj sdk sdl"
 );
 
+my $outfile = "run.out";
+open(OUTPUT, ">", $outfile) || die "Unable to open '$outfile' for writing!";
+
 foreach my $setting (keys %settings)
 {
     foreach my $recordsize (@recordsizes)
@@ -76,9 +79,11 @@ foreach my $setting (keys %settings)
     }
 }
 
+close(OUTPUT) || die "Unable to close '$outfile' after writing!";
+
 sub do_zfs_benchmark
 {
-    my ($outputfile, $recordsize, $diskconfig, $compression) = @_;
+    my ($testbasename, $recordsize, $diskconfig, $compression) = @_;
 
     $logger->info("Creating a new zpool...");
     my $cmd = "zpool";
@@ -123,9 +128,12 @@ sub do_zfs_benchmark
 
 	$logger->info("Running bonnie++ benchmark...");
 	$cmd = "bonnie++";
-	@args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", sprintf("%s-%.3f_percent_filled.csv", $outputfile, $filllevel));
-	$cmd = join(" ", ($cmd, @args));
-	system($cmd) == 0 or die "Error on running bonnie++ using the command '$cmd': $?";
+	my $testname = sprintf("%s-%07.3f_percent_filled", $testbasename, $filllevel);
+	@args = ("-m", $testname, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q");
+	my $output = capturex($cmd, @args);
+
+	print OUTPUT $output;
+
 	$logger->info("Finished bonnie++ benchmark run");
     }
 
