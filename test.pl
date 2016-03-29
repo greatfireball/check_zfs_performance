@@ -19,7 +19,8 @@ log4perl.appender.LOGFILE.layout.ConversionPattern=[%r] %F %L %c - %m%n
 
 log4perl.appender.Screen         = Log::Log4perl::Appender::Screen
 log4perl.appender.Screen.stderr  = 0
-log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+log4perl.appender.Screen.layout = PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=[%d] %c - %m%n
 ";
 
 use Log::Log4perl;
