@@ -24,7 +24,9 @@ Log::Log4perl->init(\$logconf);
 my $logger = Log::Log4perl->get_logger();
 
 # create a 1 GB random drive as seed
+$logger->info("Starting to create a random file...");
 system("dd if=/dev/urandom of=/tmp/random_1Gb.bin bs=1M count=1024");
+$logger->info("Finished to creation of the random file");
 
 my @compression_levels=qw(lz4 gzip off);
 my @recordsizes=qw(128k 512k 1M 2M 5M);
@@ -57,36 +59,49 @@ foreach my $setting (keys %settings)
 sub do_zfs_benchmark
 {
     my ($outputfile, $recordsize, $diskconfig, $compression) = @_;
-    
+
+    $logger->info("Creating a new zpool...");
     my $cmd = "zpool";
     my @args = ("create", "-o ashift=12", "-o autoexpand=on", "tank", $diskconfig);
     system($cmd, @args) == 0 or die "Error creating the pool: $?";
+    $logger->info("Finished creation of a new zpool");
 
+    $logger->info("Exporting tank...");
     $cmd = "zpool";
     @args = ("export", "tank");
     system($cmd, @args) == 0 or die "Error on exporting of the pool: $?";
+    $logger->info("Finished export of tank");
 
+    $logger->info("Re-importing tank...");
     $cmd = "zpool";
     @args = ("import", "-d /dev/disk/by-path/", "tank");
     system($cmd, @args) == 0 or die "Error on reimport of the pool: $?";
+    $logger->info("Finished re-import of tank");
 
+    $logger->info("Setting compression of tank...");
     $cmd = "zfs";
     @args = ("set", "compression=$compression", "tank");
     system($cmd, @args) == 0 or die "Error while setting the compression to '$compression': $?";
+    $logger->info("Finished compression setting");
 
+    $logger->info("Setting recordsize of tank...");
     $cmd = "zfs";
     @args = ("set", "recordsize=$recordsize", "tank");
     system($cmd, @args) == 0 or die "Error while setting the recordsize to '$recordsize': $?";
+    $logger->info("Finished recordsize setting");
 
+    $logger->info("Creating temporary folder...");
     mkdir("/tank/test", 0777) || die "Error on creating the folder: $!";
+    $logger->info("Finished creation of temporary folder");
 
     $cmd = "bonie++";
     @args = ("-m $outputfile", "-d /tank/test", "-u genomics", "-n 192", "-q", ">> output.csv");
 
+    $logger->info("Destroying tank...");
     $cmd = "zpool";
     @args = ("destroy", "tank");
     system($cmd, @args) == 0 or die "Error on destroy of the pool: $?";
-
+    $logger->info("Finished destruction of tank...");
 }
 
 
