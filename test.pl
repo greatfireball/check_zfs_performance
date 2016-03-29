@@ -45,7 +45,7 @@ my %settings=(
     two_raidz_different_shelfs => "raidz sda sdb sdc sdd sde sdf raidz sdg sdh sdi sdj sdk sdl",
     raidz2_same_shelf => "raidz2 sda sdb sdc sdd sde sdf",
     raidz2_different_shelfs => "raidz2 sda sdb sdc sdg sdh sdi",
-    two_raidz2_different_shelfs => "raidz2 sda sdb sdc sdd sde sdf raidz sdg sdh sdi sdj sdk sdl"
+    two_raidz2_different_shelfs => "raidz2 sda sdb sdc sdd sde sdf raidz2 sdg sdh sdi sdj sdk sdl"
 );
 
 foreach my $setting (keys %settings)
