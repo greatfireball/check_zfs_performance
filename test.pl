@@ -201,6 +201,9 @@ sub convert_to_real_number
 {
     my ($input) = @_;
 
+    # if comma are present, replace them by .
+    $input =~ s/,/./g;
+
     # convert the suffixes into real numbers
     if ($input =~ s/(\D)$//)
     {
