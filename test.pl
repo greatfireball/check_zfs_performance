@@ -66,11 +66,11 @@ my %settings=(
 my $outfile = "run.out";
 open(OUTPUT, ">", $outfile) || die "Unable to open '$outfile' for writing!";
 
-foreach my $setting (keys %settings)
+foreach my $compression (@compression_levels)
 {
     foreach my $recordsize (@recordsizes)
     {
-	foreach my $compression (@compression_levels)
+	foreach my $setting (keys %settings)
 	{
 	    my $outfile = join("-", ("bonnie", $setting, $recordsize, $compression));
 
