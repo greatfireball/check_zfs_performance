@@ -11,7 +11,7 @@ my $logconf = "
 log4perl.rootLogger=DEBUG, LOGFILE, Screen
 
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
-log4perl.appender.LOGFILE.filename=/var/log/myerrs.log
+log4perl.appender.LOGFILE.filename=run.log
 log4perl.appender.LOGFILE.mode=append
 
 log4perl.appender.LOGFILE.layout=PatternLayout
