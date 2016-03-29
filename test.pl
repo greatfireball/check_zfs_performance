@@ -94,9 +94,11 @@ sub do_zfs_benchmark
     mkdir("/tank/test", 0777) || die "Error on creating the folder: $!";
     $logger->info("Finished creation of temporary folder");
 
+    $logger->info("Running bonnie++ benchmark...");
     $cmd = "bonnie++";
     @args = ("-m", $outputfile, "-d", "/tank/test", "-u", "genomics", "-n", "192", "-q", ">>", $outputfile.".csv");
     system($cmd, @args) == 0 or die "Error on running bonnie++: $?";
+    $logger->info("Finished bonnie++ benchmark run");
 
     $logger->info("Destroying tank...");
     $cmd = "zpool";
